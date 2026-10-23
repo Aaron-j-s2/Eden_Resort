@@ -1,0 +1,188 @@
+@import 'tailwindcss';
+
+/*
+ * Eden Falls — design tokens
+ * Palette drawn from the property: deep plantation greens, the warm ivory of
+ * paper and stone, and the laterite orange of the cottage walls (used sparingly).
+ */
+@theme {
+  --color-woodland: #102a23;
+  --color-forest: #183d32;
+  --color-forest-soft: #24503f;
+  --color-moss: #4f6a4c;
+  --color-sage: #a7b49a;
+  --color-sage-soft: #cdd4c3;
+  --color-stone: #d8d0c2;
+  --color-ivory: #f5f1e8;
+  --color-paper: #fcfbf7;
+  --color-earth: #75624e;
+  --color-laterite: #b4623a;
+  --color-laterite-deep: #8e4a2a;
+  --color-ink: #17201c;
+  --color-ink-soft: #48534d;
+  --color-danger: #9b2c1f;
+
+  --font-display: 'Cormorant Garamond Variable', 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Manrope Variable', Manrope, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --text-display-xl: clamp(3.1rem, 1.6rem + 6.4vw, 7.6rem);
+  --text-display-xl--line-height: 0.92;
+  --text-display-lg: clamp(2.5rem, 1.6rem + 3.6vw, 5rem);
+  --text-display-lg--line-height: 1;
+  --text-display-md: clamp(2rem, 1.5rem + 2vw, 3.25rem);
+  --text-display-md--line-height: 1.05;
+  --text-display-sm: clamp(1.6rem, 1.35rem + 1vw, 2.25rem);
+  --text-display-sm--line-height: 1.1;
+
+  --ease-calm: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-drift: drift 14s var(--ease-calm) both;
+  @keyframes drift {
+    from {
+      transform: scale(1.08);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 6rem;
+  }
+  body {
+    @apply bg-paper font-sans text-ink antialiased;
+    font-feature-settings: 'ss01', 'cv11';
+    text-rendering: optimizeLegibility;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-display font-medium;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  ::selection {
+    background: var(--color-sage);
+    color: var(--color-woodland);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-laterite);
+    outline-offset: 3px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* Small uppercase label with deliberate tracking. */
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+/* Chapter numeral used to pace long pages (I, II, III …). */
+@utility chapter {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.125rem;
+  letter-spacing: 0.04em;
+}
+
+/* Underline that grows on hover — the primary link affordance. */
+@utility link-line {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 100% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  padding-bottom: 2px;
+  transition: background-size 400ms var(--ease-calm);
+  &:hover {
+    background-size: 35% 1px;
+  }
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Editorial drop cap for story paragraphs. */
+@utility drop-cap {
+  &::first-letter {
+    font-family: var(--font-display);
+    float: left;
+    font-size: 4.6em;
+    line-height: 0.8;
+    padding: 0.08em 0.12em 0 0;
+    color: var(--color-laterite-deep);
+  }
+}
+
+/* ---- react-day-picker skin --------------------------------------------- */
+.eden-calendar {
+  --rdp-accent-color: var(--color-forest);
+  --rdp-accent-background-color: var(--color-sage-soft);
+  --rdp-range_middle-background-color: var(--color-ivory);
+  --rdp-range_middle-color: var(--color-ink);
+  --rdp-range_start-date-background-color: var(--color-forest);
+  --rdp-range_end-date-background-color: var(--color-forest);
+  --rdp-range_start-color: var(--color-paper);
+  --rdp-range_end-color: var(--color-paper);
+  --rdp-today-color: var(--color-laterite-deep);
+  --rdp-day-height: 2.75rem;
+  --rdp-day-width: 2.75rem;
+  --rdp-day_button-height: 2.6rem;
+  --rdp-day_button-width: 2.6rem;
+  --rdp-day_button-border-radius: 0;
+  --rdp-selected-border: 1px solid var(--color-forest);
+  --rdp-nav_button-height: 2.5rem;
+  --rdp-nav_button-width: 2.5rem;
+  --rdp-months-gap: 2.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+}
+.eden-calendar .rdp-caption_label {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 500;
+}
+.eden-calendar .rdp-weekday {
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+  font-weight: 600;
+}
+@media (max-width: 380px) {
+  .eden-calendar {
+    --rdp-day-height: 2.35rem;
+    --rdp-day-width: 2.35rem;
+    --rdp-day_button-height: 2.25rem;
+    --rdp-day_button-width: 2.25rem;
+  }
+}
+.eden-calendar .rdp-disabled {
+  opacity: 0.3;
+}

@@ -1,0 +1,42 @@
+{
+  "name": "eden-falls-resort",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Eden Falls Resort — website and booking management platform",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "concurrently -n api,web -c green,cyan \"npm:dev -w @eden/api\" \"npm:dev -w @eden/web\"",
+    "build": "npm run build -w @eden/shared && npm run build -w @eden/api && npm run build -w @eden/web",
+    "lint": "eslint .",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test:unit && npm run test:api",
+    "test:unit": "npm run test -w @eden/shared && npm run test -w @eden/web",
+    "test:api": "npm run test -w @eden/api",
+    "test:e2e": "npm run e2e -w @eden/web",
+    "images": "node scripts/optimize-images.mjs",
+    "db:start": "npx supabase start -x studio,imgproxy,realtime,edge-runtime,logflare,vector,storage-api,postgres-meta,supavisor,mailpit",
+    "db:stop": "npx supabase stop",
+    "db:reset": "npx supabase db reset",
+    "db:status": "npx supabase status -o env",
+    "admin:create": "npm run admin:create -w @eden/api --"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "concurrently": "10.0.6",
+    "eslint": "10.13.0",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "eslint-plugin-react-refresh": "0.5.7",
+    "globals": "17.13.0",
+    "sharp": "^0.35.5",
+    "supabase": "2.121.0",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.0"
+  }
+}

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#102a23" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>Eden Falls Resort — A nature retreat near Thirparappu, Kanyakumari</title>
+    <meta
+      name="description"
+      content="A quiet eco-retreat in Koodal near Thirparappu, Kanyakumari District: cottages and pavilions among rubber plantations, bamboo and a natural stream."
+    />
+    <!-- Hero image preload (AVIF, sized for common viewports). -->
+    <link
+      rel="preload"
+      as="image"
+      type="image/avif"
+      imagesrcset="/images/resort/stream/pavilion-bridge-480.avif 480w, /images/resort/stream/pavilion-bridge-768.avif 768w, /images/resort/stream/pavilion-bridge-1024.avif 1024w, /images/resort/stream/pavilion-bridge-enhanced-1600.avif 1600w"
+      imagesizes="100vw"
+    />
+    <!--
+      Structured data: only facts confirmed by the owner (name, address, phone).
+      No ratings, prices or availability are published here.
+    -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Resort",
+        "name": "Eden Falls Resort",
+        "telephone": "+91 95974 45838",
+        "image": "/og-image.jpg",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Koodal, near Nandhimangalam, Thirparappu",
+          "addressLocality": "Kulasekharam",
+          "addressRegion": "Tamil Nadu",
+          "postalCode": "629161",
+          "addressCountry": "IN"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>Eden Falls Resort — please enable JavaScript, or call +91 95974 45838 to book.</noscript>
+    <script type="module" src="/src/app/main.tsx"></script>
+  </body>
+</html>
