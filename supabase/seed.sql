@@ -1,9 +1,4 @@
--- Eden Falls Resort — development seed
---
--- !! The two room types below are SAMPLE DATA (is_sample = true). Names, prices,
--- !! occupancy and inventory are placeholders so the booking flow can be
--- !! exercised locally. Replace them in Admin → Rooms with the resort's confirmed
--- !! details before going live. See docs/admin-guide.md.
+-- Eden Falls Resort — seed data (matches the production setup)
 --
 -- Site settings contain only facts supplied by the owner or verified publicly.
 -- `null` values render as "please confirm with the resort" on the website.
@@ -107,25 +102,23 @@ insert into public.site_settings (setting_key, setting_value, is_public) values
 on conflict (setting_key) do nothing;
 
 -- ---------------------------------------------------------------------------
--- SAMPLE room types (development only — replace before production)
+-- Accommodation: the resort's cottages (7 cottages, up to 4 adults + 2 children each).
+-- The nightly rate is hidden on the website (show_price = false); staff see it in
+-- the admin and in booking emails. Confirm the rate in Admin → Rooms.
 -- ---------------------------------------------------------------------------
 insert into public.room_types
   (id, name, slug, short_description, description, base_price, max_adults, max_children, max_occupancy,
-   inventory_count, bed_type, amenities, booking_rules, is_active, is_sample, display_order)
+   inventory_count, bed_type, amenities, booking_rules, is_active, is_sample, show_price, display_order)
 values
-  ('a1f3c1d2-0000-4000-8000-000000000001', 'Cottage (sample listing)', 'sample-cottage',
-   'Sample listing — replace with the resort''s confirmed cottage details before launch.',
-   'This is placeholder content for local development. The photographs are the resort''s own, but the name, price, capacity and number of rooms shown here are not confirmed. Update them in Admin → Rooms.',
-   4500.00, 2, 1, 3, 3, null, array['Air conditioning', 'Ceiling fan'], '', true, true, 10),
-  ('a1f3c1d2-0000-4000-8000-000000000002', 'Room (sample listing)', 'sample-room',
-   'Sample listing — replace with the resort''s confirmed room details before launch.',
-   'This is placeholder content for local development. The photographs are the resort''s own, but the name, price, capacity and number of rooms shown here are not confirmed. Update them in Admin → Rooms.',
-   3500.00, 2, 1, 3, 2, null, array['Ceiling fan'], '', true, true, 20)
+  ('a1f3c1d2-0000-4000-8000-000000000001', 'Cottage', 'cottage',
+   'Laterite-orange cottages with tiled roofs, set among rubber trees and palms.',
+   'Our cottages stand among the tall rubber trees and palms of the estate, each with a shaded veranda for slow mornings and quiet evenings. Inside, the rooms are simple and calm: carved wooden beds, tall ceilings and windows that look out onto the trees.',
+   4500.00, 4, 2, 6, 7, null, array['Air conditioning', 'Ceiling fan'], '', true, false, false, 0)
 on conflict (id) do nothing;
 
 insert into public.room_images (room_type_id, image_path, alt_text, display_order) values
   ('a1f3c1d2-0000-4000-8000-000000000001', '/images/resort/stay/cottage-evening', 'A cottage glowing with warm light at dusk, its veranda shaded by palms', 0),
-  ('a1f3c1d2-0000-4000-8000-000000000001', '/images/resort/stay/room-carved-bed', 'Bedroom with warm orange walls, a carved wooden bed and wooden chairs', 10),
-  ('a1f3c1d2-0000-4000-8000-000000000001', '/images/resort/stay/cottage-plantation', 'A laterite-orange cottage with a tiled roof among tall rubber trees', 20),
-  ('a1f3c1d2-0000-4000-8000-000000000002', '/images/resort/stay/room-tall-ceiling', 'Tall-ceilinged bedroom with wooden floors, a ceiling fan and a carved bed', 0),
-  ('a1f3c1d2-0000-4000-8000-000000000002', '/images/resort/stay/room-window-view', 'Simple guest room with a bed and a wide window looking out onto trees', 10);
+  ('a1f3c1d2-0000-4000-8000-000000000001', '/images/resort/stay/cottage-plantation', 'A laterite-orange cottage with a tiled roof among tall rubber trees', 1),
+  ('a1f3c1d2-0000-4000-8000-000000000001', '/images/resort/stay/room-carved-bed', 'Bedroom with warm orange walls, a carved wooden bed and wooden chairs', 2),
+  ('a1f3c1d2-0000-4000-8000-000000000001', '/images/resort/stay/room-tall-ceiling', 'Tall-ceilinged bedroom with wooden floors, a ceiling fan and a carved bed', 3),
+  ('a1f3c1d2-0000-4000-8000-000000000001', '/images/resort/stay/room-window-view', 'Simple guest room with a bed and a wide window looking out onto trees', 4);

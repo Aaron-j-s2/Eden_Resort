@@ -47,6 +47,7 @@ function toRow(input: RoomTypeInput) {
     amenities: input.amenities,
     booking_rules: input.bookingRules,
     is_active: input.isActive,
+    show_price: input.showPrice,
     display_order: input.displayOrder,
   };
 }
@@ -102,6 +103,7 @@ export async function updateRoomType(ctx: AppContext, id: string, input: RoomTyp
     inventoryFrom: before.inventoryCount,
     inventoryTo: input.inventoryCount,
     activeTo: input.isActive,
+    showPriceTo: input.showPrice,
   });
   return getRoomType(ctx, id);
 }

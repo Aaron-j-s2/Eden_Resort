@@ -138,23 +138,27 @@ export function BookingConfirmation({ booking, contact }: { booking: PublicBooki
           <aside className="lg:col-span-4 lg:col-start-9">
             <div className="border border-forest/15 bg-ivory">
               <ResortImage slug="cottage-evening" sizes="(min-width: 1024px) 30vw, 100vw" className="aspect-[16/10]" />
-              <dl className="space-y-3 p-6 text-sm">
-                <div className="flex justify-between">
-                  <dt className="text-ink-soft">{pluralize(booking.nights, 'night')}</dt>
-                  <dd className="tabular">{formatINR(booking.subtotal)}</dd>
-                </div>
-                {Number(booking.taxes) > 0 && (
+              {booking.total === null ? (
+                <p className="p-6 text-xs text-ink-soft">No payment has been taken.</p>
+              ) : (
+                <dl className="space-y-3 p-6 text-sm">
                   <div className="flex justify-between">
-                    <dt className="text-ink-soft">Taxes</dt>
-                    <dd className="tabular">{formatINR(booking.taxes)}</dd>
+                    <dt className="text-ink-soft">{pluralize(booking.nights, 'night')}</dt>
+                    <dd className="tabular">{formatINR(booking.subtotal ?? 0)}</dd>
                   </div>
-                )}
-                <div className="flex items-baseline justify-between border-t border-forest/15 pt-4">
-                  <dt className="eyebrow">Quoted total</dt>
-                  <dd className="tabular font-display text-3xl text-forest">{formatINR(booking.total)}</dd>
-                </div>
-                <p className="pt-2 text-xs text-ink-soft">No payment has been taken. The resort will explain how to pay when confirming.</p>
-              </dl>
+                  {Number(booking.taxes) > 0 && (
+                    <div className="flex justify-between">
+                      <dt className="text-ink-soft">Taxes</dt>
+                      <dd className="tabular">{formatINR(booking.taxes ?? 0)}</dd>
+                    </div>
+                  )}
+                  <div className="flex items-baseline justify-between border-t border-forest/15 pt-4">
+                    <dt className="eyebrow">Quoted total</dt>
+                    <dd className="tabular font-display text-3xl text-forest">{formatINR(booking.total)}</dd>
+                  </div>
+                  <p className="pt-2 text-xs text-ink-soft">No payment has been taken. The resort will explain how to pay when confirming.</p>
+                </dl>
+              )}
             </div>
           </aside>
         </Container>

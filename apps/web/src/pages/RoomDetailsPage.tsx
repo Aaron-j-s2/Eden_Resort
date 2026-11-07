@@ -57,16 +57,18 @@ export default function RoomDetailsPage() {
             ← All accommodation
           </Link>
           <h1 className="mt-5 max-w-4xl text-display-lg">{room.name}</h1>
-          <p className="mt-4 font-display text-2xl text-ivory/85">
-            From {formatINR(room.basePrice)} <span className="font-sans text-sm">per night</span>
-          </p>
+          {room.basePrice !== null && (
+            <p className="mt-4 font-display text-2xl text-ivory/85">
+              From {formatINR(room.basePrice)} <span className="font-sans text-sm">per night</span>
+            </p>
+          )}
         </Container>
       </section>
 
       <section className="bg-paper py-20 sm:py-28">
         <Container className="grid gap-16 lg:grid-cols-12">
           <div className="lg:col-span-7">
-            {room.isSample && <SampleNotice className="mb-8" />}
+            {room.isSample && <SampleNotice className="mb-8" showPrice={room.showPrice} />}
             <Reveal>
               <p className="font-display text-3xl leading-snug text-forest">{room.shortDescription}</p>
               {room.description && (
@@ -107,7 +109,7 @@ export default function RoomDetailsPage() {
                   ['Adults', `Up to ${room.maxAdults}`],
                   ['Children', room.maxChildren > 0 ? `Up to ${room.maxChildren}` : 'Please ask'],
                   ['Bed', room.bedType ?? 'Confirmed on booking'],
-                  ['Rate', `${formatINR(room.basePrice)} / night`],
+                  ...(room.basePrice !== null ? [['Rate', `${formatINR(room.basePrice)} / night`]] : []),
                 ].map(([k, v]) => (
                   <div key={k} className="flex justify-between gap-4 border-b border-forest/15 py-4">
                     <dt className="eyebrow text-ink-soft">{k}</dt>

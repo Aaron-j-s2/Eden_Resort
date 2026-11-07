@@ -11,7 +11,7 @@ Three pieces: a **Supabase project** (database + auth), the **API** (Node.js), a
    npx supabase link --project-ref <your-project-ref>
    npx supabase db push            # applies supabase/migrations
    ```
-3. Load production settings and gallery rows — **not** the sample rooms. In the SQL editor, run the `site_settings` insert from `supabase/seed.sql` and the whole of `supabase/seed.gallery.sql`. Then create real room types in Admin → Rooms.
+3. Load the seed data: run `supabase/seed.sql` (site settings and the Cottage listing) and `supabase/seed.gallery.sql` in the SQL editor, or with `psql`. Adjust the cottage details in Admin → Rooms afterwards.
 4. **Authentication → Providers → Email**: keep email sign-in enabled. **Authentication → Sign In / Providers**: turn **off** "Allow new users to sign up".
 5. **Authentication → URL configuration**: set Site URL to your website URL.
 6. **Project Settings → API Keys**: copy the *publishable* key (for the web) and create a *secret* key (for the API only).
@@ -136,6 +136,6 @@ Static hosts (Netlify, Vercel, Cloudflare Pages) also work: publish `apps/web/di
 
 ## Optional integrations
 
-- **Email alerts**: set `RESEND_API_KEY` and `NOTIFY_FROM_EMAIL` (a verified sender), then enable alerts and a staff email in Admin → Settings → Notifications.
+- **Email alerts**: set `SMTP_HOST=smtp.gmail.com`, `SMTP_PORT=465`, `SMTP_USER` (the Gmail address) and `SMTP_PASS` (a Google App Password — needs 2-Step Verification). Then, in Admin → Settings → Notifications, enable alerts and enter one or more staff emails separated by commas. Each new booking email lists the guest, stay, price and a link to the booking. (Resend via `RESEND_API_KEY` + `NOTIFY_FROM_EMAIL` still works when SMTP is not set.)
 - **Online payments (e.g. Razorpay)**: not implemented. The schema has a `payments` table and `record_verified_payment()`; a future webhook handler must verify the provider signature server-side before calling it. Bookings stay "Pay at resort" until then.
 - **WhatsApp alerts**: require a WhatsApp Business API provider; the setting exists but no integration is connected.

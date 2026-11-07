@@ -38,6 +38,7 @@ Guests can check their status any time at **/booking/find** with their reference
 - Prices apply to new requests only; existing bookings keep their quoted rate.
 - "Rooms of this type" is the number of physical rooms. You cannot reduce it below what is already reserved on any future night — the system will tell you the date.
 - Rooms with booking history cannot be deleted; untick **Published** instead.
+- **Show price on the website** (Visibility panel) — untick to remove this room's price from the website completely: no price box, rate row or totals on room pages, availability results, the booking summary or the confirmation page, and the API does not send the amount at all. Pricing still works as normal: staff see the rate in the admin and in booking alert emails, and each booking stores its quoted total.
 - Photographs are chosen from the resort's own photo library. To add new photos, place originals in the photo folder, add them to `scripts/image-catalog.json` and run `npm run images`.
 
 ## Settings
@@ -48,7 +49,7 @@ Contact details, address, booking policies, homepage text, experiences, nearby a
 
 These items could not be verified from public sources (Goibibo and MakeMyTrip timed out; Justdial blocked automated access; only a public Instagram hashtag page loaded). Please confirm or replace them:
 
-- [ ] **Room types** — replace both *sample listings* (names, descriptions, prices, occupancy, number of rooms, bed types, amenities), or unpublish them.
+- [x] **Room types** — one real listing, *Cottage* (7 cottages, up to 4 adults + 2 children each, all five room photos). Price is hidden on the website; confirm the nightly rate, bed type and amenities in Admin → Rooms.
 - [ ] **Check-in / check-out times, cancellation, children and ID policies** (Settings → Booking policies).
 - [ ] **Tax** — set the applicable GST rate (currently 0%).
 - [ ] **Facilities** — the swimming pool, dining, campfire and events/gatherings are shown as confirmed based on the information you provided. Untick any that are not offered. There are **no photographs of the pool or dining**; those sections show a "photograph to come" panel until photos are added.

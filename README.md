@@ -59,4 +59,4 @@ API integration and e2e tests create and delete their own data, and **refuse to 
 
 ## Before going live
 
-Several details could not be verified from public sources and are **placeholders** — most importantly the two *sample* room types and their prices. See the checklist in [docs/admin-guide.md](docs/admin-guide.md#before-launch-checklist).
+Several details could not be verified from public sources and are **placeholders** — most importantly the cottage nightly rate (hidden on the website for now). See the checklist in [docs/admin-guide.md](docs/admin-guide.md#before-launch-checklist).

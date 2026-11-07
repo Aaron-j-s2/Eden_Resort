@@ -188,7 +188,7 @@ function ResultRow({ result, highlighted, onSelect }: { result: AvailabilityResu
         <p className="mt-2 text-sm text-ink-soft">
           Up to {pluralize(room.maxOccupancy, 'guest')} per room · {room.maxAdults} adults, {room.maxChildren} children
         </p>
-        {room.isSample && <SampleNotice className="mt-4" />}
+        {room.isSample && <SampleNotice className="mt-4" showPrice={room.showPrice} />}
         <Link to={`/stay/${room.slug}`} target="_blank" className="eyebrow link-line mt-4 inline-block text-forest">
           Room details
         </Link>
@@ -200,13 +200,17 @@ function ResultRow({ result, highlighted, onSelect }: { result: AvailabilityResu
           </p>
         ) : (
           <div>
-            <p className="eyebrow text-ink-soft">
-              {pluralize(quote!.nights, 'night')} · {pluralize(quote!.rooms, 'room')}
-            </p>
-            <p className="tabular mt-1 font-display text-4xl text-forest">{formatINR(quote!.total)}</p>
-            <p className="text-xs text-ink-soft">
-              {formatINR(quote!.nightlyRate)} per room per night{Number(quote!.taxes) > 0 ? ' · incl. taxes' : ''}
-            </p>
+            {quote && (
+              <>
+                <p className="eyebrow text-ink-soft">
+                  {pluralize(quote.nights, 'night')} · {pluralize(quote.rooms, 'room')}
+                </p>
+                <p className="tabular mt-1 font-display text-4xl text-forest">{formatINR(quote.total)}</p>
+                <p className="text-xs text-ink-soft">
+                  {formatINR(quote.nightlyRate)} per room per night{Number(quote.taxes) > 0 ? ' · incl. taxes' : ''}
+                </p>
+              </>
+            )}
             {availableRooms <= 2 && <p className="mt-2 text-xs font-semibold text-laterite-deep">Only {pluralize(availableRooms, 'room')} left for these dates</p>}
           </div>
         )}
@@ -388,7 +392,7 @@ function DetailsAndReview({
 }
 
 function BookingSummaryCard({ stay, result }: { stay: StayState; result: AvailabilityResult }) {
-  const q = result.quote!;
+  const q = result.quote;
   return (
     <div className="border border-forest/15 bg-ivory lg:sticky lg:top-28">
       <ResortImage path={result.room.images[0]?.imagePath} alt={result.room.images[0]?.altText} sizes="(min-width: 1024px) 30vw, 100vw" className="aspect-[16/9]" />
@@ -411,29 +415,35 @@ function BookingSummaryCard({ stay, result }: { stay: StayState; result: Availab
               {stay.children > 0 && `, ${pluralize(stay.children, 'child', 'children')}`}
             </dd>
           </div>
-          <div className="flex justify-between gap-4 border-b border-forest/15 pb-4">
+          <div className={cn('flex justify-between gap-4', q && 'border-b border-forest/15 pb-4')}>
             <dt className="text-ink-soft">Rooms</dt>
             <dd>{stay.rooms}</dd>
           </div>
-          <div className="flex justify-between gap-4">
-            <dt className="text-ink-soft">
-              {formatINR(q.nightlyRate)} × {pluralize(q.nights, 'night')} × {pluralize(q.rooms, 'room')}
-            </dt>
-            <dd className="tabular">{formatINR(q.subtotal)}</dd>
-          </div>
-          {Number(q.taxes) > 0 && (
-            <div className="flex justify-between gap-4">
-              <dt className="text-ink-soft">Taxes</dt>
-              <dd className="tabular">{formatINR(q.taxes)}</dd>
-            </div>
+          {q && (
+            <>
+              <div className="flex justify-between gap-4">
+                <dt className="text-ink-soft">
+                  {formatINR(q.nightlyRate)} × {pluralize(q.nights, 'night')} × {pluralize(q.rooms, 'room')}
+                </dt>
+                <dd className="tabular">{formatINR(q.subtotal)}</dd>
+              </div>
+              {Number(q.taxes) > 0 && (
+                <div className="flex justify-between gap-4">
+                  <dt className="text-ink-soft">Taxes</dt>
+                  <dd className="tabular">{formatINR(q.taxes)}</dd>
+                </div>
+              )}
+              <div className="flex items-baseline justify-between gap-4 border-t border-forest/15 pt-4">
+                <dt className="eyebrow">Estimated total</dt>
+                <dd className="tabular font-display text-3xl text-forest">{formatINR(q.total)}</dd>
+              </div>
+            </>
           )}
-          <div className="flex items-baseline justify-between gap-4 border-t border-forest/15 pt-4">
-            <dt className="eyebrow">Estimated total</dt>
-            <dd className="tabular font-display text-3xl text-forest">{formatINR(q.total)}</dd>
-          </div>
         </dl>
         <p className="mt-4 text-xs leading-relaxed text-ink-soft">
-          The final amount is calculated by the resort's system when you send the request. Nothing is charged online.
+          {q
+            ? "The final amount is calculated by the resort's system when you send the request. Nothing is charged online."
+            : 'Nothing is charged online.'}
         </p>
       </div>
     </div>

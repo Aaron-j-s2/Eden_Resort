@@ -29,6 +29,7 @@ export interface RoomTypeRow {
   booking_rules: string;
   is_active: boolean;
   is_sample: boolean;
+  show_price: boolean;
   display_order: number;
   created_at: string;
   updated_at: string;
@@ -48,7 +49,8 @@ export function toPublicRoom(row: RoomTypeRow): RoomType {
     slug: row.slug,
     shortDescription: row.short_description,
     description: row.description,
-    basePrice: money(row.base_price),
+    basePrice: row.show_price ? money(row.base_price) : null,
+    showPrice: row.show_price,
     maxAdults: row.max_adults,
     maxChildren: row.max_children,
     maxOccupancy: row.max_occupancy,
@@ -63,6 +65,7 @@ export function toPublicRoom(row: RoomTypeRow): RoomType {
 export function toAdminRoom(row: RoomTypeRow): AdminRoomType {
   return {
     ...toPublicRoom(row),
+    basePrice: money(row.base_price),
     inventoryCount: row.inventory_count,
     isActive: row.is_active,
     displayOrder: row.display_order,

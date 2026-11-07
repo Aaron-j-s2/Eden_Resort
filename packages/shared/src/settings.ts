@@ -89,11 +89,42 @@ export const faqSettingsSchema = z.object({
   items: z.array(z.object({ question: z.string().max(300), answer: z.string().max(1500) })).max(30),
 });
 
+/** Splits a comma/semicolon/whitespace-separated list of emails, de-duplicated (case-insensitive). */
+export function parseEmailList(value: string | null | undefined): string[] {
+  if (!value) return [];
+  const seen = new Set<string>();
+  return value
+    .split(/[\s,;]+/)
+    .map((e) => e.trim())
+    .filter((e) => {
+      const key = e.toLowerCase();
+      if (!e || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+}
+
+const MAX_STAFF_EMAILS = 5;
+
 export const notificationSettingsSchema = z.object({
   emailOnNewBooking: z.boolean(),
   emailOnNewEnquiry: z.boolean(),
-  /** Staff inbox for alerts; delivery requires provider credentials in the API environment. */
-  staffEmail: z.email().nullable(),
+  /**
+   * Staff inbox(es) for alerts, comma-separated (up to 5). Delivery requires
+   * provider credentials in the API environment.
+   */
+  staffEmail: z
+    .string()
+    .max(500)
+    .nullable()
+    .refine(
+      (v) => {
+        const list = parseEmailList(v);
+        return list.length <= MAX_STAFF_EMAILS && list.every((e) => z.email().safeParse(e).success);
+      },
+      { message: `Enter up to ${MAX_STAFF_EMAILS} valid email addresses, separated by commas` },
+    )
+    .transform((v) => (parseEmailList(v).length ? parseEmailList(v).join(', ') : null)),
   whatsappAlerts: z.boolean(),
 });
 

@@ -29,7 +29,10 @@ export interface RoomType {
   slug: string;
   shortDescription: string;
   description: string;
-  basePrice: string;
+  /** Nightly rate, or null when the resort has chosen not to show prices for this room. */
+  basePrice: string | null;
+  /** False when prices are hidden on the public website (Admin → Rooms → "Show price"). */
+  showPrice: boolean;
   maxAdults: number;
   maxChildren: number;
   maxOccupancy: number;
@@ -41,6 +44,8 @@ export interface RoomType {
 }
 
 export interface AdminRoomType extends RoomType {
+  /** Staff always see the rate, even when it is hidden on the website. */
+  basePrice: string;
   inventoryCount: number;
   isActive: boolean;
   displayOrder: number;
@@ -54,6 +59,7 @@ export interface AvailabilityResult {
   fitsParty: boolean;
   /** Reason the room cannot host the requested party, if any. */
   unavailableReason: 'sold_out' | 'occupancy' | null;
+  /** Null when the room is unavailable *or* its prices are hidden (check `room.showPrice`). */
   quote: Quote | null;
 }
 
@@ -80,9 +86,10 @@ export interface PublicBookingSummary {
   children: number;
   rooms: number;
   roomName: string;
-  subtotal: string;
-  taxes: string;
-  total: string;
+  /** Amounts are null when prices are hidden for the booked room. */
+  subtotal: string | null;
+  taxes: string | null;
+  total: string | null;
   currency: string;
   createdAt: string;
 }

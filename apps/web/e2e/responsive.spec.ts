@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-const PAGES = ['/', '/about', '/stay', '/stay/sample-cottage', '/experiences', '/gallery', '/contact', '/book', '/booking/find', '/privacy'];
+const PAGES = ['/', '/about', '/stay', '/stay/cottage', '/experiences', '/gallery', '/contact', '/book', '/booking/find', '/privacy'];
 
 for (const path of PAGES) {
   test(`${path} has no horizontal overflow or runtime errors`, async ({ page }) => {

@@ -71,6 +71,18 @@ describe('booking flow', () => {
     expect(screen.getByRole('button', { name: 'Select' })).toBeEnabled();
   });
 
+  it('shows no price section at all when the room hides its price', async () => {
+    const hidden = { ...room, basePrice: null, showPrice: false };
+    mockApi({
+      ...baseApi,
+      'GET /api/availability': () => availability({ results: [{ ...availability().results[0]!, room: hidden, quote: null }] }),
+    });
+    renderAt(<BookingPage />, path);
+    expect(await screen.findByRole('heading', { name: 'Cottage (sample listing)' })).toBeInTheDocument();
+    expect(screen.queryByText(/₹|price|per night/i)).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Select' })).toBeEnabled();
+  });
+
   it('shows sold-out and empty states', async () => {
     mockApi({
       ...baseApi,
@@ -126,6 +138,13 @@ describe('booking confirmation states', () => {
     mockApi({ ...baseApi, 'GET /api/bookings/lookup': () => ({ ...booking, status: 'confirmed' }) });
     renderConfirmation('/booking/confirmation/EF-7KQ2M9XA#t=tok_abcdefghijklmnopqrstuvwxyz');
     expect(await screen.findByText(/Your stay is confirmed/)).toBeInTheDocument();
+  });
+
+  it('omits amounts on the confirmation when prices are hidden', async () => {
+    mockApi({ ...baseApi, 'GET /api/bookings/lookup': () => ({ ...booking, subtotal: null, taxes: null, total: null }) });
+    renderConfirmation('/booking/confirmation/EF-7KQ2M9XA#t=tok_abcdefghijklmnopqrstuvwxyz');
+    expect(await screen.findByTestId('booking-reference')).toHaveTextContent('EF-7KQ2M9XA');
+    expect(screen.queryByText(/₹|Quoted total|rate/i)).not.toBeInTheDocument();
   });
 
   it('falls back to reference + phone lookup when the link is invalid', async () => {

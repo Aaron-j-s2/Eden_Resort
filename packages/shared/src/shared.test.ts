@@ -93,3 +93,15 @@ describe('status transitions', () => {
     expect(canTransition('cancelled', 'confirmed')).toBe(false);
   });
 });
+
+describe('notification staff emails', () => {
+  it('parses, de-duplicates and normalises a comma-separated list', async () => {
+    const { parseEmailList, notificationSettingsSchema } = await import('./settings.js');
+    expect(parseEmailList(' a@x.com, b@y.com;A@x.com ')).toEqual(['a@x.com', 'b@y.com']);
+    expect(parseEmailList(null)).toEqual([]);
+    const base = { emailOnNewBooking: true, emailOnNewEnquiry: false, whatsappAlerts: false };
+    expect(notificationSettingsSchema.parse({ ...base, staffEmail: 'a@x.com,b@y.com' }).staffEmail).toBe('a@x.com, b@y.com');
+    expect(notificationSettingsSchema.parse({ ...base, staffEmail: '  ' }).staffEmail).toBeNull();
+    expect(notificationSettingsSchema.safeParse({ ...base, staffEmail: 'a@x.com, nope' }).success).toBe(false);
+  });
+});

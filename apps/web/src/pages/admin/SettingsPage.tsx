@@ -171,7 +171,7 @@ const SECTIONS: SectionSpec[] = [
     fields: [
       { name: 'emailOnNewBooking', label: 'Email staff on new booking requests', kind: 'boolean' },
       { name: 'emailOnNewEnquiry', label: 'Email staff on new enquiries', kind: 'boolean' },
-      { name: 'staffEmail', label: 'Staff email address', kind: 'nullable' },
+      { name: 'staffEmail', label: 'Staff email addresses', kind: 'nullable', hint: 'Separate several addresses with commas' },
       { name: 'whatsappAlerts', label: 'WhatsApp alerts (requires a WhatsApp Business API integration — not yet connected)', kind: 'boolean' },
     ],
   },

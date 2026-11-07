@@ -36,8 +36,17 @@ const envSchema = z
     /** HMAC secret for guest confirmation tokens. At least 32 random characters. */
     BOOKING_LOOKUP_SECRET: z.string().min(32, 'BOOKING_LOOKUP_SECRET must be at least 32 characters'),
 
-    /** Optional email notifications via Resend (https://resend.com). */
+    /**
+     * Optional staff email alerts. SMTP (e.g. Gmail with an app password) is
+     * used when SMTP_HOST, SMTP_USER and SMTP_PASS are set; otherwise Resend
+     * (https://resend.com) when RESEND_API_KEY is set.
+     */
+    SMTP_HOST: z.string().optional(),
+    SMTP_PORT: z.coerce.number().int().min(1).max(65535).default(465),
+    SMTP_USER: z.string().optional(),
+    SMTP_PASS: z.string().optional(),
     RESEND_API_KEY: z.string().optional(),
+    /** Sender address. Defaults to SMTP_USER when sending over SMTP. */
     NOTIFY_FROM_EMAIL: z.string().optional(),
   })
   .transform((env, ctx) => {

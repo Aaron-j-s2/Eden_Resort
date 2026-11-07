@@ -182,6 +182,7 @@ export const roomTypeInputSchema = z
     amenities: z.array(z.string().trim().min(1).max(80)).max(40).default([]),
     bookingRules: z.string().trim().max(2000).default(''),
     isActive: z.boolean().default(false),
+    showPrice: z.boolean().default(true),
     displayOrder: z.coerce.number().int().min(0).max(1000).default(0),
   })
   .refine((v) => v.maxOccupancy >= v.maxAdults, {

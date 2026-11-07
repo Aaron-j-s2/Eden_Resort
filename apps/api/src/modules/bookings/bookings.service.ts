@@ -29,18 +29,20 @@ interface PublicBookingRow {
   payment_status: PublicBookingSummary['paymentStatus'];
   created_at: string;
   guests: { phone: string } | null;
-  booking_items: { quantity: number; room_types: { name: string } | null }[];
+  booking_items: { quantity: number; room_types: { name: string; show_price: boolean } | null }[];
 }
 
 const PUBLIC_BOOKING_SELECT = `
   id, public_reference, access_token_hash, contact_name, check_in, check_out, adults, children,
   number_of_rooms, subtotal, taxes, total_amount, currency, booking_status, payment_status, created_at,
   guests ( phone ),
-  booking_items ( quantity, room_types ( name ) )
+  booking_items ( quantity, room_types ( name, show_price ) )
 `;
 
 /** Only what a guest needs to see. No phone, email or internal identifiers. */
 function toPublicSummary(row: PublicBookingRow): PublicBookingSummary {
+  // Amounts are withheld when the resort hides prices for any booked room.
+  const showPrices = row.booking_items.every((i) => i.room_types?.show_price !== false);
   return {
     reference: row.public_reference,
     status: row.booking_status,
@@ -53,9 +55,9 @@ function toPublicSummary(row: PublicBookingRow): PublicBookingSummary {
     children: row.children,
     rooms: row.number_of_rooms,
     roomName: row.booking_items.map((i) => i.room_types?.name ?? 'Room').join(', '),
-    subtotal: money(row.subtotal),
-    taxes: money(row.taxes),
-    total: money(row.total_amount),
+    subtotal: showPrices ? money(row.subtotal) : null,
+    taxes: showPrices ? money(row.taxes) : null,
+    total: showPrices ? money(row.total_amount) : null,
     currency: row.currency,
     createdAt: row.created_at,
   };
@@ -101,12 +103,36 @@ export async function createBooking(
 
   if (!result.replayed) {
     ctx.logger.info({ reference: booking.reference }, 'Booking request created');
+    const adminUrl = `${ctx.env.PUBLIC_SITE_URL.replace(/\/+$/, '')}/admin/bookings/${result.booking_id}`;
     ctx.notifier.notifyStaff('booking', {
-      subject: `New reservation request ${booking.reference}`,
-      text:
-        `${booking.roomName} · ${booking.checkIn} → ${booking.checkOut} (${booking.nights} nights)\n` +
-        `${booking.adults} adults, ${booking.children} children, ${booking.rooms} room(s)\n` +
-        `Quoted total ${formatINR(booking.total)}\n\nOpen the admin dashboard to review guest details.`,
+      subject: `New booking ${booking.reference} — ${guest.fullName}, ${booking.checkIn} to ${booking.checkOut}`,
+      replyTo: guest.email,
+      text: [
+        `New reservation request (pay later) — ${booking.reference}`,
+        '',
+        'GUEST',
+        `Name:     ${guest.fullName}`,
+        `Phone:    ${guest.phone}`,
+        `Email:    ${guest.email}`,
+        '',
+        'STAY',
+        `Room:     ${booking.roomName}`,
+        `Check-in: ${booking.checkIn}`,
+        `Check-out: ${booking.checkOut} (${booking.nights} night${booking.nights === 1 ? '' : 's'})`,
+        `Guests:   ${booking.adults} adult(s), ${booking.children} child(ren)`,
+        `Rooms:    ${booking.rooms}`,
+        '',
+        'PRICE (quoted)',
+        // Staff always see the price, even when it is hidden on the website.
+        `Subtotal: ${formatINR(money(row.subtotal))}`,
+        `Taxes:    ${formatINR(money(row.taxes))}`,
+        `Total:    ${formatINR(money(row.total_amount))}`,
+        '',
+        `Special requests: ${guest.specialRequests?.trim() || 'None'}`,
+        '',
+        `Open in admin: ${adminUrl}`,
+        'Reply to this email to write to the guest directly.',
+      ].join('\n'),
     });
   }
 

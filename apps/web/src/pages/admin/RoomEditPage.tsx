@@ -27,6 +27,7 @@ const toForm = (r?: AdminRoomType): RoomTypeInput => ({
   amenities: r?.amenities ?? [],
   bookingRules: r?.bookingRules ?? '',
   isActive: r?.isActive ?? false,
+  showPrice: r?.showPrice ?? true,
   displayOrder: r?.displayOrder ?? 0,
 });
 
@@ -152,6 +153,13 @@ function RoomForm({ room }: { room?: AdminRoomType }) {
               <input type="checkbox" className="size-4 accent-forest" {...form.register('isActive')} />
               Published on the website and bookable
             </label>
+            <label className="mt-3 flex items-center gap-3 text-sm">
+              <input type="checkbox" className="size-4 accent-forest" {...form.register('showPrice')} />
+              Show price on the website
+            </label>
+            <p className="mt-2 text-xs text-ink-soft">
+              When off, the price is removed from the website completely. You still see it here and in booking emails.
+            </p>
           </Panel>
           <AdminButton type="submit" className="w-full" disabled={m.create.isPending || m.update.isPending}>
             {isNew ? 'Create room type' : 'Save changes'}

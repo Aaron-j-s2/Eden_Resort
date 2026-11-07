@@ -7,6 +7,7 @@ export const room: RoomType = {
   shortDescription: 'Sample listing',
   description: '',
   basePrice: '4500.00',
+  showPrice: true,
   maxAdults: 2,
   maxChildren: 1,
   maxOccupancy: 3,

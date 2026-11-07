@@ -29,20 +29,22 @@ export function RoomFeature({ room, index }: { room: RoomType; index: number }) 
             {room.name}
           </Link>
         </h3>
-        {room.isSample && <SampleNotice className="mt-4" />}
+        {room.isSample && <SampleNotice className="mt-4" showPrice={room.showPrice} />}
         <p className="mt-4 max-w-md leading-relaxed text-ink-soft">{room.shortDescription}</p>
-        <dl className="mt-8 grid grid-cols-2 border-t border-forest/15 text-sm">
-          <div className="border-b border-r border-forest/15 py-4 pr-4">
+        <dl className={cn('mt-8 grid border-t border-forest/15 text-sm', room.basePrice !== null && 'grid-cols-2')}>
+          <div className={cn('border-b border-forest/15 py-4 pr-4', room.basePrice !== null && 'border-r')}>
             <dt className="eyebrow text-ink-soft">Sleeps</dt>
             <dd className="mt-1 font-display text-2xl">{pluralize(room.maxOccupancy, 'guest')}</dd>
           </div>
-          <div className="border-b border-forest/15 py-4 pl-4">
-            <dt className="eyebrow text-ink-soft">From</dt>
-            <dd className="mt-1 font-display text-2xl">
-              {formatINR(room.basePrice)}
-              <span className="ml-1 font-sans text-xs text-ink-soft">/ night</span>
-            </dd>
-          </div>
+          {room.basePrice !== null && (
+            <div className="border-b border-forest/15 py-4 pl-4">
+              <dt className="eyebrow text-ink-soft">From</dt>
+              <dd className="mt-1 font-display text-2xl">
+                {formatINR(room.basePrice)}
+                <span className="ml-1 font-sans text-xs text-ink-soft">/ night</span>
+              </dd>
+            </div>
+          )}
         </dl>
         <div className="mt-8 flex flex-wrap items-center gap-6">
           <Link to={`/book?room=${room.id}`} className="eyebrow inline-flex min-h-12 items-center bg-forest px-6 text-ivory hover:bg-woodland">

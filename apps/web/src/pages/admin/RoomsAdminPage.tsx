@@ -35,7 +35,7 @@ export default function RoomsAdminPage() {
               <div className="min-w-0 text-sm">
                 <p className="font-display text-xl text-forest">{r.name}</p>
                 <p className="mt-1 text-ink-soft">
-                  {formatINR(r.basePrice)} / night · sleeps {r.maxOccupancy} · {r.inventoryCount} room{r.inventoryCount === 1 ? '' : 's'}
+                  {formatINR(r.basePrice)} / night{r.showPrice ? '' : ' (hidden on website)'} · sleeps {r.maxOccupancy} · {r.inventoryCount} room{r.inventoryCount === 1 ? '' : 's'}
                 </p>
                 <p className="mt-2 flex flex-wrap gap-2 text-xs">
                   <span className={r.isActive ? 'font-semibold text-moss' : 'text-ink-soft'}>{r.isActive ? 'Published' : 'Unpublished'}</span>

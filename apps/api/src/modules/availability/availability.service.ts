@@ -34,9 +34,11 @@ export async function checkAvailability(ctx: AppContext, q: AvailabilityQuery): 
       availableRooms,
       fitsParty,
       unavailableReason,
-      quote: unavailableReason
-        ? null
-        : calculateQuote({ nightlyRate: room.basePrice, nights, rooms: q.rooms, taxRatePercent }),
+      // No quote when unavailable, or when the resort hides prices for this room.
+      quote:
+        unavailableReason || room.basePrice === null
+          ? null
+          : calculateQuote({ nightlyRate: room.basePrice, nights, rooms: q.rooms, taxRatePercent }),
     };
   });
 
