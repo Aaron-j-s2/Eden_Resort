@@ -1,8 +1,29 @@
 {
   "name": "eden-resort",
   "compatibility_date": "2026-10-01",
+  // Node.js APIs for the Express API (node:http server, net/tls for SMTP, process.env).
+  "compatibility_flags": ["nodejs_compat"],
+  // The API: Express app served at /api/* on the same domain as the website.
+  "main": "./apps/api/src/worker.ts",
   "assets": {
     "directory": "./apps/web/dist",
-    "not_found_handling": "single-page-application"
+    "not_found_handling": "single-page-application",
+    // Only API requests reach the Worker; everything else is a static file / the SPA.
+    "run_worker_first": ["/api/*"]
+  },
+  "observability": { "enabled": true },
+  // Bundle the Node.js build of pino (its "browser" build lacks what pino-http needs).
+  "alias": { "pino": "./node_modules/pino/pino.js" },
+  // Public, non-secret settings. Secrets are set in the Cloudflare dashboard
+  // (Settings → Variables and Secrets): SUPABASE_SECRET_KEY, BOOKING_LOOKUP_SECRET, SMTP_PASS.
+  "vars": {
+    "NODE_ENV": "production",
+    "SUPABASE_URL": "https://gadamqbkaxamsbwhgmyv.supabase.co",
+    "FRONTEND_URL": "https://edenfallsresort.com,https://www.edenfallsresort.com",
+    "PUBLIC_SITE_URL": "https://edenfallsresort.com",
+    "TRUST_PROXY": "1",
+    "SMTP_HOST": "smtp.gmail.com",
+    "SMTP_PORT": "465",
+    "SMTP_USER": "edenfallsresorts@gmail.com"
   }
 }

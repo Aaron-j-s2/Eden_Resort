@@ -69,7 +69,13 @@ function createTransport(env: Env): Send | null {
  * Notifications. Otherwise the event is logged (without guest contact details)
  * and skipped.
  */
-export function createNotifier(env: Env, db: SupabaseClient, logger: Logger): Notifier {
+export function createNotifier(
+  env: Env,
+  db: SupabaseClient,
+  logger: Logger,
+  /** Keeps fire-and-forget work alive after the response (Cloudflare Workers' waitUntil). */
+  background: (task: Promise<unknown>) => void = () => {},
+): Notifier {
   const send = createTransport(env);
 
   async function deliver(kind: 'booking' | 'enquiry', message: Notification) {
@@ -93,7 +99,7 @@ export function createNotifier(env: Env, db: SupabaseClient, logger: Logger): No
   return {
     notifyStaff(kind, message) {
       if (env.NODE_ENV === 'test') return;
-      deliver(kind, message).catch((err: unknown) => logger.error({ err, kind }, 'Staff email alert failed'));
+      background(deliver(kind, message).catch((err: unknown) => logger.error({ err, kind }, 'Staff email alert failed')));
     },
   };
 }

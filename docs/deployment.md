@@ -21,6 +21,17 @@ Three pieces: a **Supabase project** (database + auth), the **API** (Node.js), a
      npm run admin:create -- --email owner@yourdomain --name "Owner"
    ```
 
+## Cloudflare Workers (current production setup)
+
+`wrangler.jsonc` deploys the website **and** the API as one Worker: static files come from `apps/web/dist`, and `/api/*` runs the Express app (`apps/api/src/worker.ts`). The Cloudflare build (connected to GitHub) runs `npm run build -w @eden/shared && npm run build -w @eden/web`, then `npx wrangler deploy`.
+
+- Public settings live in `wrangler.jsonc` → `vars`; public build values live in `.env.production`.
+- **Secrets** (Workers → eden-resort → Settings → Variables and Secrets, type *Secret*): `SUPABASE_SECRET_KEY`, `BOOKING_LOOKUP_SECRET`, `SMTP_PASS`. Deploys keep them.
+- Local test of the Worker: put those three in `.dev.vars` (git-ignored), build the web app, then `npx wrangler dev`.
+- Check: `https://<domain>/api/health` should return `{"ok":true,...}`.
+
+The sections below describe the alternative: a self-hosted Node server.
+
 ## 2. API server
 
 ```bash

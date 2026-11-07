@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
+import type { Logger } from 'pino';
 import { pinoHttp } from 'pino-http';
 import type { Env } from './config/env.js';
 import type { AppContext } from './context.js';
@@ -16,12 +17,15 @@ import { publicRoutes } from './routes/public.routes.js';
 export interface CreateAppOptions {
   env: Env;
   rateLimits?: Partial<RateLimits>;
+  /** Optional logger (the Cloudflare Worker logs through console). */
+  logger?: Logger;
+  /** Registers background work that must outlive the response (Workers' waitUntil). */
+  background?: (task: Promise<unknown>) => void;
 }
 
-export function createApp({ env, rateLimits }: CreateAppOptions) {
-  const logger = createLogger(env);
+export function createApp({ env, rateLimits, logger = createLogger(env), background }: CreateAppOptions) {
   const db = createServiceClient(env);
-  const ctx: AppContext = { env, db, logger, notifier: createNotifier(env, db, logger) };
+  const ctx: AppContext = { env, db, logger, notifier: createNotifier(env, db, logger, background) };
   const limiters = createRateLimiters({ ...DEFAULT_RATE_LIMITS, ...rateLimits });
 
   const app = express();
