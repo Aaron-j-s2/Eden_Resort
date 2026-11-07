@@ -2,6 +2,9 @@ import type { CSSProperties } from 'react';
 import { fallbackSrc, photo, photoByPath, srcSet, type ManifestImage } from '@/lib/images';
 import { cn } from '@/lib/utils';
 
+/** Resort photo shown wherever a specific photograph is missing, so no area is left blank. */
+const FALLBACK_SLUG = 'pond-pavilion-path';
+
 interface ResortImageProps {
   /** Photo slug from the manifest, or a stored base path such as /images/resort/stay/cottage-evening */
   slug?: string;
@@ -37,7 +40,7 @@ export function ResortImage({
   style,
 }: ResortImageProps) {
   const img: ManifestImage | undefined = slug ? photo(slug) : photoByPath(path);
-  if (!img) return <ImageMissing className={className} label={alt} />;
+  if (!img) return slug === FALLBACK_SLUG ? null : <ImageMissing className={className} label={alt} />;
 
   return (
     <picture className={cn('block overflow-hidden bg-stone/60', fill && 'relative', className)} style={style}>
@@ -58,19 +61,12 @@ export function ResortImage({
   );
 }
 
-/** Honest placeholder used where the resort has not supplied a photograph yet. */
+/**
+ * Used where no photograph has been chosen (or a stored path no longer exists):
+ * shows a general view of the resort grounds instead of an empty block.
+ */
 export function ImageMissing({ className, label }: { className?: string; label?: string }) {
-  return (
-    <div
-      role="img"
-      aria-label={label ? `${label} — photograph coming soon` : 'Photograph coming soon'}
-      className={cn(
-        'relative flex items-end overflow-hidden bg-forest p-6 text-ivory',
-        "before:absolute before:inset-0 before:bg-[repeating-linear-gradient(135deg,transparent_0_14px,rgba(245,241,232,0.06)_14px_15px)] before:content-['']",
-        className,
-      )}
-    >
-      <span className="eyebrow relative text-sage">Photograph to come</span>
-    </div>
-  );
+  const img = photo(FALLBACK_SLUG);
+  if (!img) return <div className={cn('bg-forest', className)} aria-hidden />;
+  return <ResortImage slug={FALLBACK_SLUG} alt={label ? `${label} — ${img.alt}` : img.alt} sizes="(min-width: 1024px) 50vw, 100vw" className={className} />;
 }

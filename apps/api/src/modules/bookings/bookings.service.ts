@@ -122,12 +122,16 @@ export async function createBooking(
         `Guests:   ${booking.adults} adult(s), ${booking.children} child(ren)`,
         `Rooms:    ${booking.rooms}`,
         '',
-        'PRICE (quoted)',
-        // Staff always see the price, even when it is hidden on the website.
-        `Subtotal: ${formatINR(money(row.subtotal))}`,
-        `Taxes:    ${formatINR(money(row.taxes))}`,
-        `Total:    ${formatINR(money(row.total_amount))}`,
-        '',
+        // The price section follows the room's "Show price on the website" switch.
+        ...(booking.total !== null
+          ? [
+              'PRICE (quoted)',
+              `Subtotal: ${formatINR(booking.subtotal ?? 0)}`,
+              `Taxes:    ${formatINR(booking.taxes ?? 0)}`,
+              `Total:    ${formatINR(booking.total)}`,
+              '',
+            ]
+          : []),
         `Special requests: ${guest.specialRequests?.trim() || 'None'}`,
         '',
         `Open in admin: ${adminUrl}`,

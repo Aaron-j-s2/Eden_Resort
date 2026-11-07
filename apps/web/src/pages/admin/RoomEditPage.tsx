@@ -158,7 +158,7 @@ function RoomForm({ room }: { room?: AdminRoomType }) {
               Show price on the website
             </label>
             <p className="mt-2 text-xs text-ink-soft">
-              When off, the price is removed from the website completely. You still see it here and in booking emails.
+              When off, the price is removed from the website and from booking emails. You still see it here in the admin.
             </p>
           </Panel>
           <AdminButton type="submit" className="w-full" disabled={m.create.isPending || m.update.isPending}>

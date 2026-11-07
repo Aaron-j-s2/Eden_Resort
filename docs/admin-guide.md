@@ -38,7 +38,7 @@ Guests can check their status any time at **/booking/find** with their reference
 - Prices apply to new requests only; existing bookings keep their quoted rate.
 - "Rooms of this type" is the number of physical rooms. You cannot reduce it below what is already reserved on any future night — the system will tell you the date.
 - Rooms with booking history cannot be deleted; untick **Published** instead.
-- **Show price on the website** (Visibility panel) — untick to remove this room's price from the website completely: no price box, rate row or totals on room pages, availability results, the booking summary or the confirmation page, and the API does not send the amount at all. Pricing still works as normal: staff see the rate in the admin and in booking alert emails, and each booking stores its quoted total.
+- **Show price on the website** (Visibility panel) — untick to remove this room's price from the website completely: no price box, rate row or totals on room pages, availability results, the booking summary or the confirmation page, and the API does not send the amount at all. The booking alert emails follow the same switch (no price section when it is off). Pricing still works as normal: staff see the rate in the admin, and each booking stores its quoted total.
 - Photographs are chosen from the resort's own photo library. To add new photos, place originals in the photo folder, add them to `scripts/image-catalog.json` and run `npm run images`.
 
 ## Settings
