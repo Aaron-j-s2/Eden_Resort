@@ -14,7 +14,7 @@ export default function AboutPage() {
   return (
     <>
       <Seo
-        title="About the resort"
+        title="About Eden Falls Resort, Thirparappu"
         description="Eden Falls Resort is a nature-focused retreat in Koodal near Nandhimangalam and Thirparappu, Kanyakumari District — cottages and pavilions among rubber trees, lily ponds and a natural stream."
       />
       <PageHero

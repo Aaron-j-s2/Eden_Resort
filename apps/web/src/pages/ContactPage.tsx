@@ -23,7 +23,7 @@ export default function ContactPage() {
   return (
     <>
       <Seo
-        title="Contact & directions"
+        title="Contact & directions — Eden Falls Resort, Thirparappu"
         description="Call +91 95974 45838, message us on WhatsApp or send an enquiry. Eden Falls Resort, Koodal, near Nandhimangalam, Thirparappu, Kanyakumari District 629161."
       />
       <section className="bg-paper pb-20 pt-32 sm:pt-40">

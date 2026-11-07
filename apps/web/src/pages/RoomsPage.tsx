@@ -16,8 +16,8 @@ export default function RoomsPage() {
   return (
     <>
       <Seo
-        title="Stay — cottages and rooms"
-        description="Cottages and rooms at Eden Falls Resort, set among rubber trees and lily ponds near Thirparappu. See capacity and nightly rates, then check availability for your dates."
+        title="Cottages near Thirparappu, Kanyakumari"
+        description="Stay in a cottage at Eden Falls Resort, set among rubber trees and lily ponds near Thirparappu, Kanyakumari. See who each cottage sleeps, then check availability for your dates."
       />
       <PageHero
         slug="cottage-evening"

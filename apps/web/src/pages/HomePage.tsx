@@ -27,8 +27,8 @@ export default function HomePage() {
   return (
     <>
       <Seo
-        title="Eden Falls Resort — A nature retreat near Thirparappu, Kanyakumari"
-        description="A quiet eco-retreat in Koodal near Thirparappu, Kanyakumari District: cottages and pavilions among rubber plantations, bamboo and a natural stream. Request a reservation online."
+        title="Eden Falls Resort, Thirparappu — Nature Resort in Kanyakumari"
+        description="Eden Falls Resort (Eden Resort) is a quiet nature resort in Koodal near Thirparappu, Kanyakumari: cottages among rubber plantations, bamboo and a natural stream, close to Thirparappu Falls. Book online."
       />
       <Hero headline={home.heroHeadline} eyebrow={home.heroEyebrow} intro={home.heroIntro} />
       <Story heading={home.storyHeading} body={home.storyBody} />

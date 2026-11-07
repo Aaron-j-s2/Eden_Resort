@@ -24,9 +24,11 @@ const env = { ...(await rootEnv()), ...process.env };
 const site = (env.VITE_SITE_URL || 'http://localhost:5173').replace(/\/$/, '');
 const paths = ['/', '/stay', '/experiences', '/gallery', '/about', '/contact', '/book', '/privacy'];
 
-if (env.SITEMAP_API_URL) {
+// Room pages: from SITEMAP_API_URL, or the live site's own API when building for a real domain.
+const apiUrl = env.SITEMAP_API_URL || (site.startsWith('https://') ? `${site}/api` : '');
+if (apiUrl) {
   try {
-    const res = await fetch(`${env.SITEMAP_API_URL.replace(/\/$/, '')}/rooms`, { signal: AbortSignal.timeout(5000) });
+    const res = await fetch(`${apiUrl.replace(/\/$/, '')}/rooms`, { signal: AbortSignal.timeout(5000) });
     const body = await res.json();
     if (body.ok) for (const r of body.data) paths.push(`/stay/${r.slug}`);
   } catch {

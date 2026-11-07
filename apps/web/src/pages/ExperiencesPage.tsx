@@ -19,8 +19,8 @@ export default function ExperiencesPage() {
   return (
     <>
       <Seo
-        title="Experiences"
-        description="The stream, the plantation, the pool, dining, campfire evenings and gatherings at Eden Falls Resort — plus nearby Thirparappu Falls."
+        title="Things to do near Thirparappu Falls"
+        description="The stream, the plantation, the pool, dining, campfire evenings and gatherings at Eden Falls Resort in Kanyakumari — plus nearby Thirparappu Falls."
       />
       <PageHero
         slug="stream-rapids"

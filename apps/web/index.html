@@ -6,11 +6,21 @@
     <meta name="theme-color" content="#102a23" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <title>Eden Falls Resort — A nature retreat near Thirparappu, Kanyakumari</title>
+    <title>Eden Falls Resort, Thirparappu — Nature Resort in Kanyakumari</title>
     <meta
       name="description"
-      content="A quiet eco-retreat in Koodal near Thirparappu, Kanyakumari District: cottages and pavilions among rubber plantations, bamboo and a natural stream."
+      content="Eden Falls Resort (Eden Resort) is a quiet nature resort in Koodal near Thirparappu, Kanyakumari: cottages among rubber plantations, bamboo and a natural stream, close to Thirparappu Falls."
     />
+    <meta name="geo.region" content="IN-TN" />
+    <meta name="geo.placename" content="Thirparappu, Kanyakumari, Tamil Nadu" />
+    <!-- Link previews (WhatsApp, Facebook) read these without running JavaScript. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Eden Falls Resort" />
+    <meta property="og:title" content="Eden Falls Resort, Thirparappu — Nature Resort in Kanyakumari" />
+    <meta property="og:description" content="Cottages among rubber plantations, bamboo and a natural stream, near Thirparappu Falls, Kanyakumari." />
+    <meta property="og:image" content="https://edenfallsresort.com/og-image.jpg" />
+    <meta property="og:url" content="https://edenfallsresort.com/" />
+    <meta property="og:locale" content="en_IN" />
     <!-- Hero image preload (AVIF, sized for common viewports). -->
     <link
       rel="preload"
@@ -26,18 +36,42 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Resort",
-        "name": "Eden Falls Resort",
-        "telephone": "+91 95974 45838",
-        "image": "/og-image.jpg",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "Koodal, near Nandhimangalam, Thirparappu",
-          "addressLocality": "Kulasekharam",
-          "addressRegion": "Tamil Nadu",
-          "postalCode": "629161",
-          "addressCountry": "IN"
-        }
+        "@graph": [
+          {
+            "@type": "Resort",
+            "@id": "https://edenfallsresort.com/#resort",
+            "name": "Eden Falls Resort",
+            "alternateName": ["Eden Resort", "Eden Falls Resort Thirparappu", "Eden Resort Thirparappu", "Eden Falls Resort Kanyakumari"],
+            "description": "A nature resort in Koodal near Thirparappu, Kanyakumari District: cottages among rubber plantations, bamboo and a natural stream, close to Thirparappu Falls.",
+            "url": "https://edenfallsresort.com/",
+            "telephone": "+91 95974 45838",
+            "image": ["https://edenfallsresort.com/og-image.jpg"],
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Koodal, near Nandhimangalam, Thirparappu",
+              "addressLocality": "Kulasekharam",
+              "addressRegion": "Tamil Nadu",
+              "postalCode": "629161",
+              "addressCountry": "IN"
+            },
+            "areaServed": ["Thirparappu", "Kulasekharam", "Kanyakumari District"],
+            "hasMap": "https://www.google.com/maps/search/?api=1&query=Eden+Falls+Resort+Koodal+Nandhimangalam+Kulasekharam+Kanyakumari+629161",
+            "amenityFeature": [
+              { "@type": "LocationFeatureSpecification", "name": "Swimming pool", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "Natural stream", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "Cottages", "value": true }
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://edenfallsresort.com/#website",
+            "url": "https://edenfallsresort.com/",
+            "name": "Eden Falls Resort",
+            "alternateName": ["Eden Resort", "Eden Falls Resort Thirparappu"],
+            "inLanguage": "en-IN",
+            "publisher": { "@id": "https://edenfallsresort.com/#resort" }
+          }
+        ]
       }
     </script>
   </head>
