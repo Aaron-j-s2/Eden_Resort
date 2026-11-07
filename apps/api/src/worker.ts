@@ -44,7 +44,17 @@ const handler = httpServerHandler({ port: PORT });
 
 export default {
   fetch(request: Request, bindings: unknown, ctx: unknown) {
-    start();
+    try {
+      start();
+    } catch (err) {
+      // Misconfiguration (e.g. a missing secret): report setting *names* only, never values.
+      const message = err instanceof Error ? err.message : String(err);
+      console.error('API failed to start:', message);
+      return Response.json(
+        { ok: false, error: { code: 'CONFIG_ERROR', message: 'The booking service is not configured correctly.', detail: message } },
+        { status: 503, headers: { 'Cache-Control': 'no-store' } },
+      );
+    }
     // Give Express the real client IP (rate limiting) via X-Forwarded-For; TRUST_PROXY=1.
     const headers = new Headers(request.headers);
     const ip = request.headers.get('cf-connecting-ip');
